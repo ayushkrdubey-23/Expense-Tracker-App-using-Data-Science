@@ -1,0 +1,12 @@
+EXPENSE TRACKER - EDA SUMMARY
+========================================
+total_records: 266
+total_spend: 493023.76999999996
+average_transaction: 1853.472819548872
+min_transaction: 68.82
+max_transaction: 11961.55
+date_start: 2024-01-03
+date_end: 2024-10-28
+unique_categories: 8
+unique_payment_methods: 5
+========================================
