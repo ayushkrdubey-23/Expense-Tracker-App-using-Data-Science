@@ -293,11 +293,12 @@ def main():
     )
     args = parser.parse_args()
 
-    if args.dashboard:
+    # When launched via `streamlit run main.py`, render the dashboard UI
+    if args.dashboard or "streamlit" in sys.modules:
         render_dashboard()
         return
 
-    # Otherwise run the CLI pipeline
+    # CLI mode: run the data pipeline end to end
     run_pipeline(skip_data_gen=args.skip_data_gen)
 
 
