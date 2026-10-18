@@ -103,7 +103,7 @@ def load_clean_data() -> pd.DataFrame:
 
 
 def render_dashboard() -> None:
-    """Render the Streamlit dashboard."""
+    """Render the Streamlit dashboard with tabs."""
     st.set_page_config(page_title="Expense Tracker App", page_icon="💰", layout="wide")
 
     st.title("💰 Expense Tracker App")
@@ -153,54 +153,130 @@ def render_dashboard() -> None:
     if selected_payment != "All":
         filtered = filtered[filtered["payment_method"] == selected_payment]
 
-    # KPI metrics
-    total_spend = filtered["amount"].sum()
-    avg_transaction = filtered["amount"].mean()
-    total_transactions = len(filtered)
-
-    col1, col2, col3 = st.columns(3)
-    col1.metric("Total Spend", f"₹{total_spend:,.2f}")
-    col2.metric("Avg per Transaction", f"₹{avg_transaction:,.2f}")
-    col3.metric("Total Transactions", f"{total_transactions}")
-
-    st.markdown("---")
-
-    # Charts
-    st.subheader("Spending by Category")
+    # Load analysis sections
     category_df = _load_section("CATEGORY ANALYSIS")
-    if not category_df.empty:
-        st.bar_chart(category_df.set_index("category")["total_spend"])
-
-    st.subheader("Monthly Spending Trend")
     monthly_df = _load_section("MONTHLY TREND")
-    if not monthly_df.empty:
-        monthly_df_plot = monthly_df.set_index("month")["total_spend"]
-        st.line_chart(monthly_df_plot)
-
-    st.subheader("Category Share")
-    if not category_df.empty:
-        st.write(category_df[["category", "total_spend", "percentage_of_total"]])
-
-    st.subheader("Spend by Payment Method")
     payment_df = _load_section("PAYMENT METHOD ANALYSIS")
-    if not payment_df.empty:
-        st.bar_chart(payment_df.set_index("payment_method")["total_spend"])
+    budget_df = _load_section("BUDGET COMPARISON")
 
-    st.markdown("---")
+    # Tabs
+    tab_overview, tab_analysis, tab_insights, tab_data, tab_pipeline = st.tabs(
+        ["Overview", "Analysis", "Insights", "Data", "Pipeline"]
+    )
 
-    # Raw data table
-    st.subheader("Expense Records")
-    st.dataframe(filtered.sort_values("date", ascending=False), use_container_width=True)
+    # ---- Tab 1: Overview ----
+    with tab_overview:
+        st.subheader("Overview")
+        total_spend = filtered["amount"].sum()
+        avg_transaction = filtered["amount"].mean()
+        total_transactions = len(filtered)
 
-    # Insights report
-    st.markdown("---")
-    st.subheader("Insights Report")
-    insights_path = os.path.join(OUTPUTS_DIR, "insights_report.md")
-    if os.path.exists(insights_path):
-        with open(insights_path, "r", encoding="utf-8") as f:
-            st.markdown(f.read())
-    else:
-        st.info("Run the pipeline to generate the insights report.")
+        col1, col2, col3 = st.columns(3)
+        col1.metric("Total Spend", f"₹{total_spend:,.2f}")
+        col2.metric("Avg per Transaction", f"₹{avg_transaction:,.2f}")
+        col3.metric("Total Transactions", f"{total_transactions}")
+
+        st.markdown("---")
+        st.write("### Expense Summary")
+        st.write(f"**Date Range:** {min_date.date()} to {max_date.date()}")
+        st.write(f"**Total Records:** {len(df)}")
+        st.write(f"**Filtered Records:** {len(filtered)}")
+        st.write(f"**Categories:** {df['category'].nunique()}")
+        st.write(f"**Payment Methods:** {df['payment_method'].nunique()}")
+
+    # ---- Tab 2: Analysis ----
+    with tab_analysis:
+        st.subheader("Spending Analysis")
+
+        col_a, col_b = st.columns(2)
+        with col_a:
+            st.write("### Spend by Category")
+            if not category_df.empty:
+                st.bar_chart(category_df.set_index("category")["total_spend"])
+            else:
+                st.info("Run the pipeline to generate charts.")
+
+        with col_b:
+            st.write("### Monthly Spending Trend")
+            if not monthly_df.empty:
+                st.line_chart(monthly_df.set_index("month")["total_spend"])
+            else:
+                st.info("Run the pipeline to generate charts.")
+
+        col_c, col_d = st.columns(2)
+        with col_c:
+            st.write("### Category Share")
+            if not category_df.empty:
+                st.write(category_df[["category", "total_spend", "percentage_of_total"]])
+            else:
+                st.info("Run the pipeline to generate charts.")
+
+        with col_d:
+            st.write("### Spend by Payment Method")
+            if not payment_df.empty:
+                st.bar_chart(payment_df.set_index("payment_method")["total_spend"])
+            else:
+                st.info("Run the pipeline to generate charts.")
+
+    # ---- Tab 3: Insights ----
+    with tab_insights:
+        st.subheader("Insights & Budget Comparison")
+
+        insights_path = os.path.join(OUTPUTS_DIR, "insights_report.md")
+        if os.path.exists(insights_path):
+            with open(insights_path, "r", encoding="utf-8") as f:
+                st.markdown(f.read())
+        else:
+            st.info("Run the pipeline to generate the insights report.")
+
+        st.markdown("---")
+        st.write("### Budget Comparison Table")
+        if not budget_df.empty:
+            st.dataframe(budget_df, use_container_width=True)
+        else:
+            st.info("Run the pipeline to generate budget comparison.")
+
+    # ---- Tab 4: Data ----
+    with tab_data:
+        st.subheader("Expense Records")
+        st.dataframe(
+            filtered.sort_values("date", ascending=False),
+            use_container_width=True,
+            height=400,
+        )
+
+        st.download_button(
+            label="Download Filtered Data (CSV)",
+            data=filtered.to_csv(index=False).encode("utf-8"),
+            file_name="expenses_filtered.csv",
+            mime="text/csv",
+        )
+
+    # ---- Tab 5: Pipeline ----
+    with tab_pipeline:
+        st.subheader("Pipeline Controls")
+        st.markdown("Run the full data pipeline to regenerate synthetic data, clean it, analyze, visualize, and generate insights.")
+
+        col_p1, col_p2 = st.columns(2)
+        with col_p1:
+            if st.button("Run Full Pipeline", type="primary"):
+                with st.spinner("Running pipeline..."):
+                    run_pipeline(skip_data_gen=False)
+                st.success("Pipeline complete! Refresh the page to see updated results.")
+
+        with col_p2:
+            if st.button("Run Without Data Regeneration"):
+                with st.spinner("Running pipeline..."):
+                    run_pipeline(skip_data_gen=True)
+                st.success("Pipeline complete! Refresh the page to see updated results.")
+
+        st.markdown("---")
+        st.write("### Pipeline Stages")
+        st.write("1. **Data Generation** - Creates synthetic expense records")
+        st.write("2. **Data Cleaning** - Parses dates, fixes amounts, removes duplicates")
+        st.write("3. **Analysis** - Aggregates by category, month, payment method; budget comparison")
+        st.write("4. **Visualization** - Generates bar, line, and pie charts")
+        st.write("5. **Insights** - Auto-generates insights report with recommendations")
 
 
 def main():
