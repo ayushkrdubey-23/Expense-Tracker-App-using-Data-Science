@@ -1,0 +1,193 @@
+# Step 10 - GitHub Upload Steps: Expense Tracker App
+
+Complete instructions to create a GitHub repository, connect your local project, push code, and tag the release — with commit messages that prove phased work.
+
+---
+
+## Recommended repository details
+
+| Field | Value |
+|-------|-------|
+| **Repo name** | `Expense-Tracker-App-using-Data-Science` |
+| **Description** | A data-driven Expense Tracker App built with Python, Pandas, Matplotlib, Seaborn, and Streamlit. Synthetic expense data, cleaning, analysis, visualization, and insights for personal finance tracking and budgeting. |
+| **Visibility** | Public (so recruiters can view it) |
+| **Tags** | `expense-tracker`, `data-science`, `pandas`, `matplotlib`, `seaborn`, `streamlit`, `finance`, `personal-finance`, `eda`, `student-project`, `placement-portfolio` |
+
+---
+
+## Step 10.1: Create the GitHub repository
+
+1. Go to https://github.com and sign in
+2. Click the **+** icon (top-right) → **New repository**
+3. **Repository name:** `Expense-Tracker-App-using-Data-Science`
+4. **Description:** (paste from table above)
+5. **Visibility:** Public
+6. **Do NOT** check "Add a README file" (you already have one locally)
+7. **Do NOT** check "Add .gitignore" (you already have one locally)
+8. **Do NOT** check "Add a license"
+9. Click **Create repository**
+10. Copy the repository URL (e.g., `https://github.com/YOUR-USERNAME/Expense-Tracker-App-using-Data-Science.git`)
+
+---
+
+## Step 10.2: Connect local project to GitHub
+
+Open a terminal in your project folder and run:
+
+```powershell
+# Windows PowerShell
+cd "C:\Users\kumar\OneDrive\Desktop\Ayush_Kumar_Dubey\Data Science\Project (4)\Expense-Tracker-App-using-Data-Science"
+
+# Check current git status
+git status
+
+# Add the remote origin (replace with your actual repo URL)
+git remote add origin https://github.com/YOUR-USERNAME/Expense-Tracker-App-using-Data-Science.git
+
+# Verify remote
+git remote -v
+```
+
+```bash
+# Mac / Linux
+cd "Expense-Tracker-App-using-Data-Science"
+
+git remote add origin https://github.com/YOUR-USERNAME/Expense-Tracker-App-using-Data-Science.git
+
+git remote -v
+```
+
+---
+
+## Step 10.3: Stage and commit all files
+
+The project already has 9 commits from Steps 1–9 documentation. Now commit all code files together:
+
+```powershell
+# Stage all files
+git add -A
+
+# Check what will be committed
+git status
+
+# Commit with a descriptive message
+git commit -m "Step 10: Complete project code - data generator, cleaning, analysis, visualization, insights, main.py, requirements, notebook, and outputs"
+
+# View commit history
+git log --oneline
+```
+
+---
+
+## Step 10.4: Push code to GitHub
+
+```powershell
+# Rename local branch to main (GitHub default)
+git branch -M main
+
+# Push to GitHub (set upstream on first push)
+git push -u origin main
+
+# Verify push succeeded
+git log --oneline origin/main
+```
+
+```bash
+# Mac / Linux
+git branch -M main
+git push -u origin main
+git log --oneline origin/main
+```
+
+---
+
+## Step 10.5: Tag the release
+
+Tagging marks v1.0 as a release point — useful for placements to reference a stable version.
+
+```powershell
+# Create an annotated tag
+git tag -a v1.0 -m "Release v1.0 - Expense Tracker App complete with pipeline, dashboard, and insights"
+
+# Push the tag to GitHub
+git push origin v1.0
+
+# Verify tags
+git tag
+```
+
+```bash
+# Mac / Linux
+git tag -a v1.0 -m "Release v1.0 - Expense Tracker App complete with pipeline, dashboard, and insights"
+git push origin v1.0
+git tag
+```
+
+---
+
+## Step 10.6: Verify on GitHub
+
+1. Open your repo: `https://github.com/YOUR-USERNAME/Expense-Tracker-App-using-Data-Science`
+2. Confirm all files are present:
+   - `README.md`, `requirements.txt`, `.gitignore`, `main.py`
+   - `src/` folder (data_generator.py, data_cleaning.py, analysis.py, visualization.py, insights.py)
+   - `notebooks/` folder (expense_analysis.ipynb)
+   - `docs/` folder (step1 through step9 documentation)
+   - `data/`, `outputs/`, `images/` (if not gitignored)
+3. Confirm the commit history shows all 10 steps
+4. Confirm tag `v1.0` appears under **Releases** or **Tags**
+
+---
+
+## Commit message convention used
+
+| Step | Commit message |
+|------|----------------|
+| 1 | `Step 1: Project Explanation - Expense Tracker App` |
+| 2 | `Step 2: Tech Stack Options - Option B Selected` |
+| 3 | `Step 3: Project Architecture - 7-Layer Pipeline` |
+| 4 | `Step 4: Implementation Plan - 9 Phases` |
+| 5 | `Step 5: Folder Structure - GitHub Ready` |
+| 6 | `Step 6: Installation Guide - Windows & Mac` |
+| 7 | `Step 7: Full Project Code - all src modules, main.py, requirements, notebook` |
+| 8 | `Step 8: Virtual Simulation - step-by-step guide` |
+| 9 | `Step 9: How to Run Project - CLI & Streamlit` |
+| 10 | `Step 10: Complete project code - ...` |
+
+---
+
+## .gitignore check (important before pushing)
+
+Your `.gitignore` already excludes:
+- `.venv/`, `venv/`, `env/` (virtual environments)
+- `__pycache__/`, `*.pyc` (Python cache)
+- `*.png`, `*.csv` (generated outputs — regenerated by running `main.py`)
+- `.DS_Store`, `Thumbs.db` (OS files)
+- `.vscode/`, `.idea/` (IDE folders)
+
+**Verify no secrets or virtual environment files are committed:**
+```powershell
+git log --stat --oneline -1
+```
+Check that `.venv/`, `__pycache__/`, or `.env` do NOT appear in the file list.
+
+---
+
+## Quick reference: all commands together
+
+```powershell
+cd "Expense-Tracker-App-using-Data-Science"
+git remote add origin https://github.com/YOUR-USERNAME/Expense-Tracker-App-using-Data-Science.git
+git add -A
+git commit -m "Step 10: Complete project code"
+git branch -M main
+git push -u origin main
+git tag -a v1.0 -m "Release v1.0"
+git push origin v1.0
+```
+
+---
+
+**Step 10 complete.** GitHub upload process documented — repo creation, remote connection, commits, push, and tagging with proof-of-work commit history.
+
+Please reply with **"c"** to acknowledge Step 10, and I will proceed to Step 11 (README.md) — the final step.
