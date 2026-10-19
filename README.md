@@ -2,7 +2,7 @@
 
 A data-driven Expense Tracker App built with Python, Pandas, NumPy, Matplotlib, Seaborn, and Streamlit. Track, categorize, analyze, and visualize your expenses to make better financial decisions. Built with synthetic data — ideal for student portfolios, placements, and internships.
 
-🔗 **Live Demo / Repo:** `https://github.com/YOUR-USERNAME/Expense-Tracker-App-using-Data-Science`
+🔗 **Live Demo / Repo:** `https://github.com/ayushkrdubey-23/Expense-Tracker-App-using-Data-Science`
 
 ---
 
@@ -247,8 +247,8 @@ This project is for educational and portfolio purposes. Feel free to use, modify
 
 ## 🔗 Connect
 
-- **GitHub:** `https://github.com/YOUR-USERNAME`
-- **LinkedIn:** `https://linkedin.com/in/YOUR-PROFILE`
+- **GitHub:** `https://github.com/ayushkrdubey`
+- **LinkedIn:** `https://linkedin.com/in/kumarayudubey`
 
 ---
 
